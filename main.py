@@ -1,10 +1,6 @@
-from ui.cli import start_game
+from ui.cli import cli
 
 def main():
-    print("Welcome to the Casino!")
-    game=input("what would you like to play?")
-
-    if game == "poker":
-        start_game()
+    cli()
 
 main()
