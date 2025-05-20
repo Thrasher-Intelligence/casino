@@ -18,7 +18,7 @@ If you're new to Git, here's how to clone this repository to your local machine:
 ```bash
 # Open your terminal/command prompt and navigate to where you want to store the project
 # Then run this command to clone the repository
-git clone https://github.com/yourusername/casino.git
+git clone https://github.com/Thrasher-Intelligence/casino.git
 
 # Navigate into the project directory
 cd casino
