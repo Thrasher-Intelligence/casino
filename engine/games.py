@@ -1,5 +1,5 @@
 from engine.deck import Deck
-from collections import Counter
+from engine.mechanics.pair import check_for_pair
 
 class Game:
     def __init__(self):
@@ -15,23 +15,14 @@ class Game:
             print('Your hand:')
             for card in hand:
                 print(f"{card}")
-            print(self.check_for_pair(hand))
+            print(check_for_pair(hand))
             again=input('Press Enter to play again or type "q" to quit: ')
             if again.lower() == 'q':
                 break
         print('Thanks for playing!')
 
     # inside the Game class
-    def check_for_pair(self, hand):
-        ranks = [card.rank for card in hand]
-        counts = Counter(ranks)
-        pairs = [rank for rank, count in counts.items() if count == 2]
-
-        if pairs:
-            return f"You have a pair of {pairs[0]}s!"
-        else:
-            return "No pairs found."
-
+    # We'll import this in a second.
 
 # game selection logic
 # not here forever
