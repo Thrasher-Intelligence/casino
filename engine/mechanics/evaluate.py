@@ -1,7 +1,5 @@
 from collections import Counter
 
-# If I'm handling hand assessment as a whole then I may need to rename this for clarity
-
 def evaluate_hand(hand):
     ranks = [card.rank for card in hand]
     counts = Counter(ranks)
