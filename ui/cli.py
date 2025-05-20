@@ -1,4 +1,4 @@
-from engine.games import main
+from games.games import main
 
 def cli():
     main()
