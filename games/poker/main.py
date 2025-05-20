@@ -1,5 +1,5 @@
 from engine.deck import Deck
-from engine.mechanics.pair import check_for_pair
+from engine.mechanics.evaluate import evaluate_hand
 
 def poker():
     print('Ready to play?')
@@ -11,7 +11,7 @@ def poker():
         print('Your hand:')
         for card in hand:
             print(f"{card}")
-        print(check_for_pair(hand))
+        print(evaluate_hand(hand))
         again=input('Press Enter to play again or type "q" to quit: ')
         if again.lower() == 'q':
             break
