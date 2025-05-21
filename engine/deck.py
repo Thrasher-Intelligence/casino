@@ -15,3 +15,11 @@ class Deck:
         dealt = self.cards[:num]
         self.cards = self.cards[num:]
         return dealt
+
+    def return_to_deck(self,card):
+        self.cards.extend(card)
+
+    def discard(self,card):
+        if not hasattr(self, 'discarded'):
+            self.discarded = []
+        self.discarded.extend(card)
