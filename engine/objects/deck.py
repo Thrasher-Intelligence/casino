@@ -1,5 +1,5 @@
 import random
-from engine.card import Card
+from engine.objects.card import Card
 
 # Defining Deck class
 class Deck:

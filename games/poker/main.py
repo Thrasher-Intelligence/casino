@@ -1,6 +1,7 @@
-from engine.deck import Deck
+from engine.objects.deck import Deck
+from engine.objects.hand import Hand
 from engine.mechanics.evaluate import evaluate_hand
-from engine.mechanics.exchange import exchange_cards
+from games.poker.mechanics.exchange import exchange_cards
 
 def poker():
     print('Ready to play?')
@@ -8,7 +9,7 @@ def poker():
     while True:
         deck = Deck()
         deck.shuffle()
-        hand = deck.deal(5)
+        hand = Hand(deck.deal(5))
         print('Your hand:')
         for card in hand:
             print(f"{card}")
