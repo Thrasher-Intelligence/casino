@@ -1,11 +1,15 @@
 from games.poker.main import poker
+from ui.tui import poker as tui_poker
 
 def select_game():
     print('Select a game:')
-    print('1. Poker')
+    print('1. Poker (CLI)')
+    print('2. Poker (TUI)')
     choice = input('Enter your choice: ')
     if choice == '1':
-        return poker()
+        return poker
+    elif choice == '2':
+        return tui_poker
     else:
         print('Invalid choice')
         return None
