@@ -18,18 +18,6 @@ class Hand:
                  'J': 11, 'Q': 12, 'K': 13, 'A': 14}
         return order[rank]
 
-    def has_n_of_a_kind(self, n):
-        return [rank for rank, count in self.rank_counts.items() if count == n]
-
-    def is_flush(self):
-        return any(count == 5 for count in self.suit_counts.values())
-
-    def is_straight(self):
-        values = sorted(set(self.sorted_ranks))
-        if len(values) != 5:
-            return False
-        return values[-1] - values[0] == 4 or values == [14, 5, 4, 3, 2]  # Ace-low straight
-
     def exchange(self, indices, deck):
         for idx in sorted(set(indices), reverse=True):
             if 0 <= idx < len(self.cards):

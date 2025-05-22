@@ -1,7 +1,7 @@
 from engine.objects.deck import Deck
 from engine.objects.hand import Hand
-from engine.mechanics.evaluate import evaluate_hand
 from games.poker.mechanics.exchange import exchange_cards
+from engine.mechanics.poker_eval import PokerHandEvaluator
 
 def poker():
     print('Ready to play?')
@@ -16,7 +16,8 @@ def poker():
         hand = exchange_cards(hand,deck)
         for card in hand:
             print(f"{card}")
-        print(evaluate_hand(hand))
+        evaluator = PokerHandEvaluator(hand)
+        print(evaluator.evaluate())
         again=input('Press Enter to play again or type "q" to quit: ')
         if again.lower() == 'q':
             break
