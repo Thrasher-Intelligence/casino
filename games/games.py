@@ -1,5 +1,5 @@
 from games.poker.main import poker
-from engine.tui.tui import poker as tui_poker
+from games.poker.tui.poker import poker as tui_poker
 
 def select_game():
     print('Select a game:')
