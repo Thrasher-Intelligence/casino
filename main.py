@@ -1,6 +1,3 @@
-from ui.cli import cli
-
-def main():
-    cli()
+from games.games import main
 
 main()
