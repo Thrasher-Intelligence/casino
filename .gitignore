@@ -94,6 +94,9 @@ celerybeat.pid
 # Docker
 .docker/
 
+# Player Profiles
+profiles/
+
 # Others
 .pytest_cache/
 .coverage
