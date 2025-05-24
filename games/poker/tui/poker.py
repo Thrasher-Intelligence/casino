@@ -1,6 +1,8 @@
 import blessed
 import time
 from engine.objects import Deck, Hand
+from engine.utils.profiles import load_player, save_player
+from engine.objects.player import Player
 from engine.mechanics import PokerHandEvaluator
 from engine.tui.components import draw_hand, animate_dealing
 from games.poker.tui.components import get_exchange_input
@@ -10,7 +12,13 @@ def tui_poker_game(term):
     """Main poker game loop with TUI."""
     print(term.clear)
 
-    # Main game loop
+    # Load or create player
+    player_name = "Jake"  # Later this can be interactive
+    try:
+        player = load_player(player_name)
+    except FileNotFoundError:
+        player = Player(player_name)
+
     playing = True
     while playing:
         # Initialize deck and deal cards
@@ -59,6 +67,7 @@ def tui_poker_game(term):
         print(term.move(hand_y + 8, (term.width - len("Evaluating hand...")) // 2) + "Evaluating hand...")
         time.sleep(0.5)
 
+
         evaluator = PokerHandEvaluator(hand)
         result = evaluator.evaluate()
         hand_message = get_hand_message(result)
@@ -67,9 +76,34 @@ def tui_poker_game(term):
         print(term.move(hand_y + 8, 0) + " " * term.width)  # Clear line
         message_x = (term.width - get_message_display_length(hand_message)) // 2
         print(term.move(hand_y + 8, message_x) + term.bold(term.green(hand_message)))
+        print(term.move(2, 0) + f"Balance: ${player.chips.total()}")
 
         # Add some visual spacing
         print(term.move(hand_y + 9, 0))
+
+        # Determine payout (stub for now)
+        hand_type, _ = result
+        PAYOUT_TABLE = {
+            "royal_flush": 250,
+            "straight_flush": 50,
+            "four_of_a_kind": 25,
+            "full_house": 9,
+            "flush": 6,
+            "straight": 4,
+            "three_of_a_kind": 3,
+            "two_pair": 2,
+            "pair": 1,
+            "high_card": 0
+        }
+        payout = PAYOUT_TABLE.get(hand_type, 0)
+        player_name = player.name
+        if payout > 0:
+            player.chips.deposit(1, payout)
+            print(f"Congratulations, {player_name}! You won ${payout}!")
+            print(f"Your new balance is ${player.chips.total()}")
+
+        # Save the chips to the player profile.
+        save_player(player)
 
         # Play again prompt
         play_again_msg = "Press ENTER to play again or 'q' to quit"
