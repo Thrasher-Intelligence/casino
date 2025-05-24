@@ -6,6 +6,7 @@ from engine.mechanics.poker_eval import PokerHandEvaluator
 from engine.tui.components.hand import draw_hand
 from engine.tui.components.deal import animate_dealing
 from games.poker.tui.components.exchange_input import get_exchange_input
+from games.poker.tui.utils import get_hand_message, get_message_display_length
 
 def tui_poker_game(term):
     """Main poker game loop with TUI."""
@@ -56,13 +57,26 @@ def tui_poker_game(term):
         print(term.move(3, 0) + "Your final hand:")
         draw_hand(term, hand_y, hand_x, hand)
 
-        # Evaluate hand
+        # Evaluate hand with dramatic reveal
+        print(term.move(hand_y + 8, (term.width - len("Evaluating hand...")) // 2) + "Evaluating hand...")
+        time.sleep(0.8)
+        
         evaluator = PokerHandEvaluator(hand)
         result = evaluator.evaluate()
-        print(term.move(hand_y + 8, hand_x) + term.bold(result))
+        hand_message = get_hand_message(result)
+        
+        # Clear evaluation message and show result
+        print(term.move(hand_y + 8, 0) + " " * term.width)  # Clear line
+        message_x = (term.width - get_message_display_length(hand_message)) // 2
+        print(term.move(hand_y + 8, message_x) + term.bold(term.green(hand_message)))
+        
+        # Add some visual spacing
+        print(term.move(hand_y + 9, 0))
 
-        # Play again?
-        print(term.move(hand_y + 10, hand_x) + "Press ENTER to play again or 'q' to quit")
+        # Play again prompt
+        play_again_msg = "Press ENTER to play again or 'q' to quit"
+        play_again_x = (term.width - len(play_again_msg)) // 2
+        print(term.move(hand_y + 10, play_again_x) + play_again_msg)
 
         # Wait for user input
         with term.cbreak():

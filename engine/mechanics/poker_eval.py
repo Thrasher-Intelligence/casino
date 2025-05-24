@@ -9,24 +9,24 @@ class PokerHandEvaluator:
 
     def evaluate(self):
         if self.is_straight() and self.is_flush():
-            return f"You have a straight flush in {self.get_flush_suit()}!"
+            return ("straight_flush", self.get_highest_card_desc())
         elif self.is_four_of_a_kind():
-            return f"You have four of a kind! {self.get_n_of_a_kind(4)}s!"
+            return ("four_of_a_kind", self.get_n_of_a_kind(4))
         elif self.is_full_house():
-            return f"You have a full house! {self.get_n_of_a_kind(3)}s over {self.get_n_of_a_kind(2)}s!"
+            return ("full_house", self.get_n_of_a_kind(3))
         elif self.is_flush():
-            return f"You have a flush! {self.get_flush_suit()}!"
+            return ("flush", self.get_flush_suit())
         elif self.is_straight():
-            return f"You have a straight! High {self.get_highest_card_desc()}!"
+            return ("straight", self.get_highest_card_desc())
         elif self.is_three_of_a_kind():
-            return f"You have three of a kind! {self.get_n_of_a_kind(3)}s!"
+            return ("three_of_a_kind", self.get_n_of_a_kind(3))
         elif self.is_two_pair():
-            pairs = self.get_all_n_of_a_kind(2)
-            return f"You have two pair! {pairs[0]}s and {pairs[1]}s!"
+            return ("two_pair", self.get_all_n_of_a_kind(2))
         elif self.is_pair():
-            return f"You have a pair of {self.get_n_of_a_kind(2)}s!"
+            return ("pair", self.get_n_of_a_kind(2))
         else:
-            return f"High card. {self.get_highest_card_desc()}!"
+            return ("high_card", self.get_highest_card_desc())
+
 
     def get_n_of_a_kind(self, n):
         for rank, count in self.rank_counts.items():

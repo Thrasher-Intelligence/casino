@@ -23,17 +23,20 @@ def make_hand(rank_counts):
 def test_four_of_a_kind():
     hand = make_hand({'A': 4, 'K': 1})
     evaluator = PokerHandEvaluator(hand)
-    assert "four of a kind" in evaluator.evaluate().lower()
+    result = evaluator.evaluate()
+    assert result[0] == "four_of_a_kind"
 
 def test_full_house():
     hand = make_hand({'Q': 3, 'J': 2})
     evaluator = PokerHandEvaluator(hand)
-    assert "full house" in evaluator.evaluate().lower()
+    result = evaluator.evaluate()
+    assert result[0] == "full_house"
 
 def test_two_pair():
     hand = make_hand({'9': 2, '5': 2, 'K': 1})
     evaluator = PokerHandEvaluator(hand)
-    assert "two pair" in evaluator.evaluate().lower()
+    result = evaluator.evaluate()
+    assert result[0] == "two_pair"
 
 def test_no_pairs():
     # Explicitly create cards with different suits to avoid a flush
@@ -46,19 +49,22 @@ def test_no_pairs():
     ]
     hand = Hand(cards)
     evaluator = PokerHandEvaluator(hand)
-    assert "high card" in evaluator.evaluate().lower()
+    result = evaluator.evaluate()
+    assert result[0] == "high_card"
 
 def test_three_of_a_kind():
     hand = make_hand({'7': 3, 'A': 1, '2': 1})
     evaluator = PokerHandEvaluator(hand)
-    assert "three of a kind" in evaluator.evaluate().lower()
-    assert "7s" in evaluator.evaluate()
+    result = evaluator.evaluate()
+    assert result[0] == "three_of_a_kind"
+    assert result[1] == "7"
 
 def test_one_pair():
     hand = make_hand({'J': 2, 'A': 1, '8': 1, '3': 1})
     evaluator = PokerHandEvaluator(hand)
-    assert "pair" in evaluator.evaluate().lower()
-    assert "js" in evaluator.evaluate().lower()
+    result = evaluator.evaluate()
+    assert result[0] == "pair"
+    assert result[1] == "J"
 
 def test_flush():
     # Create a hand with all the same suit
@@ -68,8 +74,9 @@ def test_flush():
     hand = Hand(cards)
 
     evaluator = PokerHandEvaluator(hand)
-    assert "flush" in evaluator.evaluate().lower()
-    assert "a" in evaluator.evaluate().lower()
+    result = evaluator.evaluate()
+    assert result[0] == "flush"
+    assert result[1] == "♠"
 
 def test_straight():
     # Create a regular straight with different suits to avoid a straight flush
@@ -78,8 +85,9 @@ def test_straight():
     hand = Hand(cards)
 
     evaluator = PokerHandEvaluator(hand)
-    assert "straight" in evaluator.evaluate().lower()
-    assert "k" in evaluator.evaluate().lower()
+    result = evaluator.evaluate()
+    assert result[0] == "straight"
+    assert result[1] == "K"
 
 def test_wheel_straight():
     # Test A-5-4-3-2 straight (the wheel)
@@ -89,7 +97,8 @@ def test_wheel_straight():
     hand = Hand(cards)
 
     evaluator = PokerHandEvaluator(hand)
-    assert "straight" in evaluator.evaluate().lower()
+    result = evaluator.evaluate()
+    assert result[0] == "straight"
 
 def test_not_straight():
     # Explicitly create cards with different suits to avoid a flush
@@ -102,8 +111,9 @@ def test_not_straight():
     ]
     hand = Hand(cards)
     evaluator = PokerHandEvaluator(hand)
-    assert "straight" not in evaluator.evaluate().lower()
-    assert "high card" in evaluator.evaluate().lower()
+    result = evaluator.evaluate()
+    assert result[0] != "straight"
+    assert result[0] == "high_card"
 
 def test_high_card():
     # Explicitly create cards with different suits to avoid a flush
@@ -116,8 +126,9 @@ def test_high_card():
     ]
     hand = Hand(cards)
     evaluator = PokerHandEvaluator(hand)
-    assert "high card" in evaluator.evaluate().lower()
-    assert "a" in evaluator.evaluate().lower()
+    result = evaluator.evaluate()
+    assert result[0] == "high_card"
+    assert result[1] == "A"
 
 def test_straight_flush():
     # Create a straight flush
@@ -125,7 +136,8 @@ def test_straight_flush():
     cards = [Card('8', suits[0]), Card('9', suits[1]), Card('10', suits[2]), 
              Card('J', suits[3]), Card('Q', suits[4])]
     hand = Hand(cards)
-    
+        
     evaluator = PokerHandEvaluator(hand)
-    assert "straight flush" in evaluator.evaluate().lower()
-    assert "q" in evaluator.evaluate().lower()
+    result = evaluator.evaluate()
+    assert result[0] == "straight_flush"
+    assert result[1] == "Q"
