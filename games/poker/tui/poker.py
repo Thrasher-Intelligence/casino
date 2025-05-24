@@ -59,17 +59,17 @@ def tui_poker_game(term):
 
         # Evaluate hand with dramatic reveal
         print(term.move(hand_y + 8, (term.width - len("Evaluating hand...")) // 2) + "Evaluating hand...")
-        time.sleep(0.8)
-        
+        time.sleep(0.5)
+
         evaluator = PokerHandEvaluator(hand)
         result = evaluator.evaluate()
         hand_message = get_hand_message(result)
-        
+
         # Clear evaluation message and show result
         print(term.move(hand_y + 8, 0) + " " * term.width)  # Clear line
         message_x = (term.width - get_message_display_length(hand_message)) // 2
         print(term.move(hand_y + 8, message_x) + term.bold(term.green(hand_message)))
-        
+
         # Add some visual spacing
         print(term.move(hand_y + 9, 0))
 
