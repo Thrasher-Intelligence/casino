@@ -23,7 +23,6 @@ def tui_poker_game(term):
     playing = True
     while playing:
         # Initialize deck and deal cards
-        player.chips.withdraw(1, ante)
         deck = Deck()
         deck.shuffle()
         hand = Hand(deck.deal(5))
@@ -101,6 +100,7 @@ def tui_poker_game(term):
         player_name = player.name
         if payout > 0:
             player.chips.deposit(1, payout)
+            player.chips.withdraw(1,ante)
             print(f"Congratulations, {player_name}! You won ${payout}!")
             print(f"Your new balance is ${player.chips.total()}")
 
