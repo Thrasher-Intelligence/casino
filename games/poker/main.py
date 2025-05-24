@@ -1,7 +1,6 @@
-from engine.objects.deck import Deck
-from engine.objects.hand import Hand
-from games.poker.mechanics.exchange import exchange_cards
-from engine.mechanics.poker_eval import PokerHandEvaluator
+from engine.objects import Deck, Hand
+from games.poker.mechanics import exchange_cards
+from engine.mechanics import PokerHandEvaluator
 
 def poker():
     print('Ready to play?')

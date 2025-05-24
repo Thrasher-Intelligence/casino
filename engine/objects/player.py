@@ -1,5 +1,5 @@
 # engine/objects/player.py
-from engine.objects.chips import ChipStack
+from .chips import ChipStack
 
 class Player:
     def __init__(self, name, chips=None):

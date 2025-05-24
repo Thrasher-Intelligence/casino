@@ -1,5 +1,5 @@
-from games.poker.main import poker
-from games.poker.tui.poker import poker as tui_poker
+from .poker import poker
+from .poker.tui import poker as tui_poker
 
 def select_game():
     print('Select a game:')

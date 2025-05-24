@@ -1,4 +1,4 @@
-# engine/objects/chipstack.py
+# Class defining a stack of chips. Represents a collection of chips with different denominations.
 
 class ChipStack:
     def __init__(self, chips=None):

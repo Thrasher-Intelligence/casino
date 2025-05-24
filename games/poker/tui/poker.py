@@ -1,11 +1,9 @@
 import blessed
 import time
-from engine.objects.deck import Deck
-from engine.objects.hand import Hand
-from engine.mechanics.poker_eval import PokerHandEvaluator
-from engine.tui.components.hand import draw_hand
-from engine.tui.components.deal import animate_dealing
-from games.poker.tui.components.exchange_input import get_exchange_input
+from engine.objects import Deck, Hand
+from engine.mechanics import PokerHandEvaluator
+from engine.tui.components import draw_hand, animate_dealing
+from games.poker.tui.components import get_exchange_input
 from games.poker.tui.utils import get_hand_message, get_message_display_length
 
 def tui_poker_game(term):

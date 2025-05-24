@@ -1,5 +1,5 @@
 import time
-from engine.tui.components.card import draw_card
+from .card import draw_card
 
 def animate_dealing(term, hand, deck, message):
     """Animate dealing cards one by one."""

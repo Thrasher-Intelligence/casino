@@ -1,4 +1,4 @@
-from engine.tui.components.hand import draw_hand
+from engine.tui.components import draw_hand
 
 def get_exchange_input(term, hand):
     """Get user input for card exchange through terminal interface."""

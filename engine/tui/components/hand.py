@@ -1,4 +1,4 @@
-from engine.tui.components.card import draw_card
+from .card import draw_card
 
 def draw_hand(term, y, x, hand, selected_indices=None):
     """Draws a hand of cards in the terminal window."""

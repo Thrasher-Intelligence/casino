@@ -1,5 +1,5 @@
 import json
-from engine.objects.player import Player
+from ..objects import Player
 import os
 
 PROFILE_DIR = "profiles"
