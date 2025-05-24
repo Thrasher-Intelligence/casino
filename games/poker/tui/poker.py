@@ -14,6 +14,7 @@ def tui_poker_game(term):
 
     # Load or create player
     player_name = "Jake"  # Later this can be interactive
+    ante = 5
     try:
         player = load_player(player_name)
     except FileNotFoundError:
@@ -22,6 +23,7 @@ def tui_poker_game(term):
     playing = True
     while playing:
         # Initialize deck and deal cards
+        player.chips.withdraw(1, ante)
         deck = Deck()
         deck.shuffle()
         hand = Hand(deck.deal(5))
@@ -109,7 +111,7 @@ def tui_poker_game(term):
         play_again_msg = "Press ENTER to play again or 'q' to quit"
         play_again_x = (term.width - len(play_again_msg)) // 2
         print(term.move(hand_y + 10, play_again_x) + play_again_msg)
-
+        print(term.move(hand_y + 12, play_again_x) + f"Ante is ${ante}")
         # Wait for user input
         with term.cbreak():
             while True:
