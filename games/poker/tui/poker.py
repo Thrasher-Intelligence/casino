@@ -5,6 +5,7 @@ from engine.utils.profiles import load_player, save_player
 from engine.objects.player import Player
 from engine.mechanics import PokerHandEvaluator
 from engine.tui.components import draw_hand, animate_dealing
+from engine.tui.components.display_balance import display_balance
 from games.poker.tui.components import get_exchange_input
 from games.poker.tui.utils import get_hand_message, get_message_display_length
 
@@ -14,21 +15,26 @@ def tui_poker_game(term):
 
     # Load or create player
     player_name = "Jake"  # Later this can be interactive
-    ante = 5
+    ante = 2
     try:
         player = load_player(player_name)
     except FileNotFoundError:
         player = Player(player_name)
+
+    # Show balance initially
+    display_balance(term, player.chips.total())
 
     playing = True
     while playing:
         # Initialize deck and deal cards
         deck = Deck()
         deck.shuffle()
+        player.chips.withdraw(1, ante)
+        display_balance(term, player.chips.total())
         hand = Hand(deck.deal(5))
 
         # Animate dealing
-        animate_dealing(term, hand, deck, "Dealing cards...")
+        animate_dealing(term, hand, deck, "Dealing cards...", player.chips.total())
 
         # Show full hand
         print(term.clear)
@@ -41,6 +47,7 @@ def tui_poker_game(term):
 
         # Card exchange phase
         print(term.clear)
+        display_balance(term, player.chips.total())
         print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
         print(term.move(3, 0) + "Would you like to exchange any cards?")
         draw_hand(term, hand_y, hand_x, hand)
@@ -54,12 +61,14 @@ def tui_poker_game(term):
 
             # Show animation for exchange
             print(term.clear)
+            display_balance(term, player.chips.total())
             print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
             print(term.move(3, 0) + "Exchanging cards...")
             time.sleep(0.5)
 
         # Show final hand
         print(term.clear)
+        display_balance(term, player.chips.total())
         print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
         print(term.move(3, 0) + "Your final hand:")
         draw_hand(term, hand_y, hand_x, hand)
@@ -77,7 +86,9 @@ def tui_poker_game(term):
         print(term.move(hand_y + 8, 0) + " " * term.width)  # Clear line
         message_x = (term.width - get_message_display_length(hand_message)) // 2
         print(term.move(hand_y + 8, message_x) + term.bold(term.green(hand_message)))
-        print(term.move(2, 0) + f"Balance: ${player.chips.total()}")
+
+        # Display balance at top right after evaluation
+        display_balance(term, player.chips.total())
 
         # Add some visual spacing
         print(term.move(hand_y + 9, 0))
@@ -100,7 +111,7 @@ def tui_poker_game(term):
         player_name = player.name
         if payout > 0:
             player.chips.deposit(1, payout)
-            player.chips.withdraw(1,ante)
+            display_balance(term, player.chips.total())
             print(f"Congratulations, {player_name}! You won ${payout}!")
             print(f"Your new balance is ${player.chips.total()}")
 
