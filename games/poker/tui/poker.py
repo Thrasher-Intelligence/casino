@@ -9,17 +9,15 @@ from engine.tui.components.display_balance import display_balance
 from games.poker.tui.components import get_exchange_input
 from games.poker.tui.utils import get_hand_message, get_message_display_length
 
+from engine.mechanics.login import login
+
 def tui_poker_game(term):
     """Main poker game loop with TUI."""
     print(term.clear)
 
-    # Load or create player
-    player_name = "Jake"  # Later this can be interactive
+    # Load or create player via login
+    player = login()
     ante = 2
-    try:
-        player = load_player(player_name)
-    except FileNotFoundError:
-        player = Player(player_name)
 
     # Show balance initially
     display_balance(term, player.chips.total())
@@ -30,7 +28,7 @@ def tui_poker_game(term):
         deck = Deck()
         deck.shuffle()
         player.chips.withdraw(1, ante)
-        display_balance(term, player.chips.total())
+        display_balance(term, player.chips.total(), player.name)
         hand = Hand(deck.deal(5))
 
         # Animate dealing
@@ -38,25 +36,25 @@ def tui_poker_game(term):
 
         # Show full hand
         print(term.clear)
-        display_balance(term, player.chips.total())
+        display_balance(term, player.chips.total(), player.name)
         hand_x = (term.width - 50) // 2
         hand_y = 5
         print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
-        display_balance(term, player.chips.total())
+        display_balance(term, player.chips.total(), player.name)
         print(term.move(3, 0) + "Your hand:")
         draw_hand(term, hand_y, hand_x, hand)
         time.sleep(1)  # Give player time to see initial hand
 
         # Card exchange phase
         print(term.clear)
-        display_balance(term, player.chips.total())
+        display_balance(term, player.chips.total(), player.name)
         print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
-        display_balance(term, player.chips.total())
+        display_balance(term, player.chips.total(), player.name)
         print(term.move(3, 0) + "Would you like to exchange any cards?")
         draw_hand(term, hand_y, hand_x, hand)
 
         # Get exchange input
-        indices = get_exchange_input(term, hand, player.chips.total())
+        indices = get_exchange_input(term, hand, player.chips.total(), player.name)
 
         if indices:
             # Exchange cards
@@ -64,17 +62,16 @@ def tui_poker_game(term):
 
             # Show animation for exchange
             print(term.clear)
-            display_balance(term, player.chips.total())
+            display_balance(term, player.chips.total(), player.name)
             print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
-            display_balance(term, player.chips.total())
+            display_balance(term, player.chips.total(), player.name)
             print(term.move(3, 0) + "Exchanging cards...")
             time.sleep(0.5)
 
         # Show final hand
         print(term.clear)
-        display_balance(term, player.chips.total())
         print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
-        display_balance(term, player.chips.total())
+        display_balance(term, player.chips.total(), player.name)
         print(term.move(3, 0) + "Your final hand:")
         draw_hand(term, hand_y, hand_x, hand)
 
@@ -92,7 +89,7 @@ def tui_poker_game(term):
         message_x = (term.width - get_message_display_length(hand_message)) // 2
         print(term.move(hand_y + 8, message_x) + term.bold(term.green(hand_message)))
         # Display balance at top right after evaluation
-        display_balance(term, player.chips.total())
+        display_balance(term, player.chips.total(), player.name)
 
         # Add some visual spacing
         print(term.move(hand_y + 9, 0))
@@ -115,7 +112,7 @@ def tui_poker_game(term):
         player_name = player.name
         if payout > 0:
             player.chips.deposit(1, payout)
-            display_balance(term, player.chips.total())
+            display_balance(term, player.chips.total(), player.name)
             print(f"Congratulations, {player_name}! You won ${payout}!")
             print(f"Your new balance is ${player.chips.total()}")
 

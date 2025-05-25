@@ -1,7 +1,7 @@
 from engine.tui.components.display_balance import display_balance
 from engine.tui.components import draw_hand
 
-def get_exchange_input(term, hand, balance):
+def get_exchange_input(term, hand, balance, player_name=None):
     """Get user input for card exchange through terminal interface."""
     selected_indices = []
     current_index = 0
@@ -13,7 +13,7 @@ def get_exchange_input(term, hand, balance):
             # Draw current state
             print(term.clear)
             print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
-            display_balance(term, balance)
+            display_balance(term, balance, player_name)
             message = "Select cards to exchange (use arrow keys, SPACE to select, ENTER to confirm)"
             print(term.move(3, (term.width - len(message)) // 2) + message)
 

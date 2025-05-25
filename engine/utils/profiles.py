@@ -19,3 +19,8 @@ def load_player(name: str) -> Player:
     with open(filepath, "r") as f:
         data = json.load(f)
     return Player.from_dict(data)
+
+def create_player(name: str) -> Player:
+    player = Player(name)
+    save_player(player)
+    return player
