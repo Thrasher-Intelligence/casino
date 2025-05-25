@@ -102,3 +102,6 @@ profiles/
 .coverage
 htmlcov/
 .mypy_cache/
+
+# Airlock Directory, check it out!
+airlock/
