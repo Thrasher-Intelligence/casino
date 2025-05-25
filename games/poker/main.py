@@ -2,7 +2,7 @@ from engine.objects import Deck, Hand
 from games.poker.mechanics import exchange_cards
 from engine.mechanics import PokerHandEvaluator
 
-def poker():
+def poker(player):
     print('Ready to play?')
     input('Press Enter to start!')
     while True:

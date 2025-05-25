@@ -1,16 +1,17 @@
+from ..utils.theme import CARD_COLORS, SUIT_COLOR_MAP
+
 def draw_card(term, y, x, card, selected=False):
     """Draws a single card in the terminal window."""
     rank = card.rank
     suit = card.suit
 
-    # Use red for hearts/diamonds, white for spades/clubs
-    if suit in ['♥', '♦']:
-        color = term.red
-    else:
-        color = term.white
-
+    # Determine color key by suit
+    suit_color_key = SUIT_COLOR_MAP.get(suit, "spades")
+    # Determine terminal color function based on selection state
     if selected:
-        color = term.reverse
+        color = CARD_COLORS["selected"](term)
+    else:
+        color = CARD_COLORS[suit_color_key](term)
 
     # Card frame
     print(term.move(y, x) + color("┌─────┐"))

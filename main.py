@@ -1,3 +1,5 @@
+from engine.mechanics.login import login
 from games.games import main
 
-main()
+player = login()
+main(player)

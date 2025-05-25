@@ -9,18 +9,15 @@ from engine.tui.components.display_balance import display_balance
 from games.poker.tui.components import get_exchange_input
 from games.poker.tui.utils import get_hand_message, get_message_display_length
 
-from engine.mechanics.login import login
-
-def tui_poker_game(term):
-    """Main poker game loop with TUI."""
+def tui_poker_game(term, player):
+    """Main poker game loop with TUI and player passed in."""
     print(term.clear)
 
-    # Load or create player via login
-    player = login()
+    # Use the passed in player directly
     ante = 2
 
     # Show balance initially
-    display_balance(term, player.chips.total())
+    display_balance(term, player.chips.total(), player.name)
 
     playing = True
     while playing:
@@ -32,7 +29,7 @@ def tui_poker_game(term):
         hand = Hand(deck.deal(5))
 
         # Animate dealing
-        animate_dealing(term, hand, deck, "Dealing cards...", player.chips.total())
+        animate_dealing(term, hand, deck, "Dealing cards...", player.chips.total(), player.name)
 
         # Show full hand
         print(term.clear)
@@ -70,6 +67,7 @@ def tui_poker_game(term):
 
         # Show final hand
         print(term.clear)
+        display_balance(term, player.chips.total(), player.name)
         print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
         display_balance(term, player.chips.total(), player.name)
         print(term.move(3, 0) + "Your final hand:")
@@ -139,16 +137,13 @@ def tui_poker_game(term):
     print(term.move(term.height // 2, (term.width - len("Thanks for playing!")) // 2) + "Thanks for playing!")
     time.sleep(1)
 
-def poker():
-    """Entry point for the TUI poker game."""
+def poker(player):
+    """Entry point for the TUI poker game with player passed in."""
     try:
         term = blessed.Terminal()
         with term.hidden_cursor():
-            tui_poker_game(term)
+            tui_poker_game(term, player)
     except Exception as e:
         import traceback
         print(f"An error occurred: {e}")
         traceback.print_exc()
-
-if __name__ == "__main__":
-    poker()

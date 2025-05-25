@@ -14,10 +14,7 @@ def select_game():
         print('Invalid choice')
         return None
 
-def main():
+def main(player):
     game = select_game()
     if game:
-        game()
-
-if __name__ == '__main__':
-    main()
+        game(player)
