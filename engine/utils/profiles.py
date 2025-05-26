@@ -24,3 +24,18 @@ def create_player(name: str) -> Player:
     player = Player(name)
     save_player(player)
     return player
+
+def list_profiles() -> list[Player]:
+    profiles = []
+    for filename in os.listdir(PROFILE_DIR):
+        if filename.endswith(".json"):
+            filepath = os.path.join(PROFILE_DIR, filename)
+            with open(filepath, "r") as f:
+                data = json.load(f)
+            profiles.append(Player.from_dict(data))
+    return profiles
+
+def player_exists(name: str) -> bool:
+    filename = f"{name.lower()}.json"
+    filepath = os.path.join(PROFILE_DIR, filename)
+    return os.path.exists(filepath)

@@ -1,12 +1,16 @@
-from engine.utils.profiles import load_player, create_player
+from engine.utils.profiles import load_player, create_player, list_profiles
+from engine.utils.profiles import player_exists
 
-def login():
-    player_name = input("Enter your name: ")
+def get_all_profiles():
+    """
+    Returns a list of tuples: (player_name, chip_total)
+    """
+    return [(p.name, p.chips.total()) for p in list_profiles()]
 
-    try:
-        player = load_player(player_name)
-        print(f"Welcome back, {player.name}!")
-    except FileNotFoundError:
-        player = create_player(player_name)
-        print(f"New player created with name: {player.name}")
-    return player
+def load_existing_profile(name):
+    return load_player(name)
+
+def create_new_profile(name):
+    if player_exists(name):
+        raise ValueError("Profile already exists.")
+    return create_player(name)

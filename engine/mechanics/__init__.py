@@ -1,4 +1,4 @@
 from .poker_eval import PokerHandEvaluator
-from .login import login
+from . import login
 
 __all__ = ['PokerHandEvaluator', 'login']
