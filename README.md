@@ -31,17 +31,22 @@ It's recommended to use a virtual environment to manage dependencies:
 ```bash
 # Create a virtual environment
 python -m venv venv
+```
 
-# Activate the virtual environment
+Activate your virtual environment:
+
+```bash
 # On Windows:
 venv\Scripts\activate
-
 # On macOS/Linux:
 source venv/bin/activate
-'''
+```
 
-'''
-# Install dependencies
+### Installing Dependencies
+
+Once the virtual environment is activated, install the required packages:
+
+```bash
 pip install -r requirements.txt
 ```
 
