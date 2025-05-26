@@ -1,17 +1,14 @@
-from ..utils.theme import CARD_COLORS, SUIT_COLOR_MAP
+from ..utils.theme import ThemeManager
 
-def draw_card(term, y, x, card, selected=False):
+def draw_card(term, y, x, card, theme_manager: ThemeManager, selected=False):
     """Draws a single card in the terminal window."""
     rank = card.rank
     suit = card.suit
 
-    # Determine color key by suit
-    suit_color_key = SUIT_COLOR_MAP.get(suit, "spades")
-    # Determine terminal color function based on selection state
     if selected:
-        color = CARD_COLORS["selected"](term)
+        color = theme_manager.get_color("selected", term)
     else:
-        color = CARD_COLORS[suit_color_key](term)
+        color = theme_manager.get_suit_color(suit, term)
 
     # Card frame
     print(term.move(y, x) + color("┌─────┐"))

@@ -8,8 +8,9 @@ from engine.tui.components import draw_hand, animate_dealing
 from engine.tui.components.display_balance import display_balance
 from games.poker.tui.components import get_exchange_input
 from games.poker.tui.utils import get_hand_message, get_message_display_length
+from engine.tui.utils.theme import ThemeManager
 
-def tui_poker_game(term, player):
+def tui_poker_game(term, player, theme_manager):
     """Main poker game loop with TUI and player passed in."""
     print(term.clear)
 
@@ -29,7 +30,7 @@ def tui_poker_game(term, player):
         hand = Hand(deck.deal(5))
 
         # Animate dealing
-        animate_dealing(term, hand, deck, "Dealing cards...", player.chips.total(), player.name)
+        animate_dealing(term, hand, deck, "Dealing cards...", player.chips.total(), player.name, theme_manager=theme_manager)
 
         # Show full hand
         print(term.clear)
@@ -39,7 +40,7 @@ def tui_poker_game(term, player):
         print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
         display_balance(term, player.chips.total(), player.name)
         print(term.move(3, 0) + "Your hand:")
-        draw_hand(term, hand_y, hand_x, hand)
+        draw_hand(term, hand_y, hand_x, hand, selected_indices=None, theme_manager=theme_manager)
         time.sleep(1)  # Give player time to see initial hand
 
         # Card exchange phase
@@ -48,10 +49,10 @@ def tui_poker_game(term, player):
         print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
         display_balance(term, player.chips.total(), player.name)
         print(term.move(3, 0) + "Would you like to exchange any cards?")
-        draw_hand(term, hand_y, hand_x, hand)
+        draw_hand(term, hand_y, hand_x, hand, selected_indices=None, theme_manager=theme_manager)
 
         # Get exchange input
-        indices = get_exchange_input(term, hand, player.chips.total(), player.name)
+        indices = get_exchange_input(term, hand, player.chips.total(), player.name, theme_manager=theme_manager)
 
         if indices:
             # Exchange cards
@@ -71,7 +72,7 @@ def tui_poker_game(term, player):
         print(term.move(0, (term.width - len("Poker TUI")) // 2) + term.bold("Poker TUI"))
         display_balance(term, player.chips.total(), player.name)
         print(term.move(3, 0) + "Your final hand:")
-        draw_hand(term, hand_y, hand_x, hand)
+        draw_hand(term, hand_y, hand_x, hand, selected_indices=None, theme_manager=theme_manager)
 
         # Evaluate hand with dramatic reveal
         print(term.move(hand_y + 8, (term.width - len("Evaluating hand...")) // 2) + "Evaluating hand...")
@@ -137,12 +138,31 @@ def tui_poker_game(term, player):
     print(term.move(term.height // 2, (term.width - len("Thanks for playing!")) // 2) + "Thanks for playing!")
     time.sleep(1)
 
-def poker(player):
+def poker(player, theme_name="light"):
     """Entry point for the TUI poker game with player passed in."""
     try:
         term = blessed.Terminal()
+        
+        # Prompt user for theme selection at startup
+        print(term.clear)
+        print(term.move(term.height // 2 - 2, (term.width - len("Select a Theme: [1] Light  [2] Dark")) // 2) + "Select a Theme: [1] Light  [2] Dark")
+        print(term.move(term.height // 2, (term.width - len("Press 1 or 2 to choose theme, or ENTER for default (Light)")) // 2) + "Press 1 or 2 to choose theme, or ENTER for default (Light)")
+        with term.cbreak():
+            while True:
+                key = term.inkey(timeout=10)
+                if key == '1':
+                    theme_name = "light"
+                    break
+                elif key == '2':
+                    theme_name = "dark"
+                    break
+                elif key.name == "KEY_ENTER" or key == "\n" or key == "\r" or key == "":
+                    theme_name = "light"
+                    break
+        
+        theme_manager = ThemeManager(theme_name=theme_name)
         with term.hidden_cursor():
-            tui_poker_game(term, player)
+            tui_poker_game(term, player, theme_manager)
     except Exception as e:
         import traceback
         print(f"An error occurred: {e}")

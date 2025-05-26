@@ -1,7 +1,7 @@
 from engine.tui.components.display_balance import display_balance
 from engine.tui.components import draw_hand
 
-def get_exchange_input(term, hand, balance, player_name=None):
+def get_exchange_input(term, hand, balance, player_name=None, theme_manager=None):
     """Get user input for card exchange through terminal interface."""
     selected_indices = []
     current_index = 0
@@ -18,7 +18,7 @@ def get_exchange_input(term, hand, balance, player_name=None):
             print(term.move(3, (term.width - len(message)) // 2) + message)
 
             # Draw hand with highlighted current selection
-            draw_hand(term, hand_y, hand_x, hand, selected_indices)
+            draw_hand(term, hand_y, hand_x, hand, selected_indices, theme_manager=theme_manager)
 
             # Highlight current selection with a cursor
             cursor_pos_y = hand_y + 5
